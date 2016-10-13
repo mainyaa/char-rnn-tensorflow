@@ -14,6 +14,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', type=str, default='data/tinyshakespeare',
                        help='data directory containing input.txt')
+    parser.add_argument('--train_dir', type=str, default='save/train',
+                       help='directory to store checkpointed models')
     parser.add_argument('--save_dir', type=str, default='save',
                        help='directory to store checkpointed models')
     parser.add_argument('--rnn_size', type=int, default=128,
@@ -90,7 +92,7 @@ def train(args):
         for e in range(args.num_epochs):
             sess.run(tf.assign(model.lr, args.learning_rate * (args.decay_rate ** e)))
             data_loader.reset_batch_pointer()
-            state = model.initial_state.eval()
+            state = sess.run(model.initial_state)
             for b in range(data_loader.num_batches):
                 start = time.time()
                 x, y = data_loader.next_batch()
