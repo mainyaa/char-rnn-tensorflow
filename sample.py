@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from __future__ import print_function
 import numpy as np
 import tensorflow as tf
@@ -18,7 +19,7 @@ def main():
                        help='model directory to store checkpointed models')
     parser.add_argument('-n', type=int, default=500,
                        help='number of characters to sample')
-    parser.add_argument('--prime', type=text_type, default=u' ',
+    parser.add_argument('--prime', default=u' ',
                        help='prime text')
     parser.add_argument('--sample', type=int, default=1,
                        help='0 to use max at each timestep, 1 to sample at each timestep, 2 to sample on spaces')
@@ -38,7 +39,7 @@ def sample(args):
         ckpt = tf.train.get_checkpoint_state(args.save_dir)
         if ckpt and ckpt.model_checkpoint_path:
             saver.restore(sess, ckpt.model_checkpoint_path)
-            print(model.sample(sess, chars, vocab, args.n, args.prime, args.sample).encode('utf-8'))
+            print(model.sample(sess, chars, vocab, args.n, args.prime.decode('utf-8'), args.sample).encode('utf-8'))
 
 if __name__ == '__main__':
     main()
